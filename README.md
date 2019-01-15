@@ -1,5 +1,7 @@
 # DarkArren_infra
 DarkArren Infra repository
+testapp_IP = 35.246.169.74
+testapp_port = 9292
 
 # Создать VM при помощи gcloud и настроить ее через startup-script
 gcloud compute instances create reddit-app\
@@ -33,5 +35,4 @@ gcloud compute firewall-rules create default-puma-server\
     --source-ranges 0.0.0.0/0 \
     --rules TCP:9292
 
-testapp_IP = 35.246.169.74
-testapp_port = 9292
+
