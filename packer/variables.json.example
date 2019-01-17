@@ -1,5 +1,5 @@
 {
-    "var_project_id": ""infra-189607",
+    "var_project_id": "infra-189607",
     "var_source_image_family": "ubuntu-1604-lts",
     "var_machine_type": "f1-micro"
 }
