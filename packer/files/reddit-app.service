@@ -1,0 +1,16 @@
+[Unit]
+Description=reddit-app
+After=syslog.target
+
+[Service]
+User=root
+Group=root
+LimitNOFILE=65535
+WorkingDirectory=/home/daanrus21/reddit
+ExecStart=/usr/local/bin/puma
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
