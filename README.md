@@ -66,3 +66,20 @@ gcloud compute firewall-rules create default-puma-server\
     --target-tags puma-server \
     --source-ranges 0.0.0.0/0 \
     --rules TCP:9292
+
+# HomeWork 07
+
+# Провалидировать и создать образ reddit-base на основе packer-темплейта
+ cd ./packer && packer validate -var-file=variables.json ubuntu16.json && packer build -var-file=variables.json ubuntu16.json
+
+# Провалидировать и создать immutable образ reddit-full на основе packer-темплейта
+cd ./packer && packer validate -var-file=variables.json immutable.json && packer build -var-file=variables.json immutable.json
+
+# Развернуть виртуальную машину на основе образа reddit-full
+gcloud compute instances create reddit-app\
+  --boot-disk-size=10GB \
+  --image-family reddit-full \
+  --machine-type=g1-small \
+  --zone=europe-west3-c \
+  --restart-on-failure \
+  --tags puma-server
