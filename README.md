@@ -83,3 +83,27 @@ gcloud compute instances create reddit-app\
   --zone=europe-west3-c \
   --restart-on-failure \
   --tags puma-server
+
+# HomeWork 08
+
+## Задание со *
+  
+### Добавление ssh-ключа пользователя в метаданные проекта
+```
+resource "google_compute_project_metadata" "default" {
+  metadata {
+    ssh-keys = "abramov1:${file(var.public_key_path)}"
+  }
+}
+``` 
+### Добавление нескольких ssh-ключей в метаданные проекта
+```
+resource "google_compute_project_metadata" "default" {
+  metadata {
+    ssh-keys = "abramov1:${file(var.public_key_path)} abramov2:${file(var.public_key_path)} abramov3:${file(var.public_key_path)} abramov4:${file(var.public_key_path)} abramov5:${file(var.public_key_path)}"
+  }
+}
+```
+### Возникающая проблема
+Если в метаданные проекта добавить ssh-ключ через web-интерфейс Google Cloud, а затем запустить terraform apply,
+то в результате в метаданных проектах останутся только те ключи, которые описаны в проекте terraform, добавленный вручную ключ исчезнет.
