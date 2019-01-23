@@ -7,6 +7,7 @@ resource "google_compute_forwarding_rule" "default" {
 
 resource "google_compute_target_pool" "default" {
   name = "reddit-target-pool"
+
   instances = [
     "europe-west1-b/reddit-app-0",
     "europe-west1-b/reddit-app-1",
