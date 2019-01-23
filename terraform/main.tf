@@ -11,7 +11,8 @@ resource "google_compute_project_metadata" "default" {
 }
 
 resource "google_compute_instance" "app" {
-  name         = "reddit-app"
+  count        = 2
+  name         = "reddit-app-${count.index}"
   machine_type = "g1-small"
   zone         = "europe-west1-b"
   tags         = ["reddit-app"]
