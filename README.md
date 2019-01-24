@@ -178,3 +178,38 @@ again. For most commands, you can disable locking with the "-lock=false"
 flag, but this is not recommended.
 
 ```
+
+Задание с **
+
+В модуль app добавлены provisioners:
+```
+  provisioner "file" {
+    source      = "${path.module}/files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+  
+  provisioner "remote-exec" {
+    script = "${path.module}/files/deploy.sh"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'export DATABASE_URL=${var.db_internal_address}' >> ~/.profile",
+      "export DATABASE_URL=${var.db_internal_address}",
+      "sudo systemctl restart puma.service"
+      ]
+  }
+```
+Модуль app получает значение переменной db_internal_address из outputs модуля db, а затем, в процессе работы провижионера, добавляет это значение в переменные окружения, что позволяет приложениею reddit обратиться к базе данных MongoDB по правильному адресу
+
+В модуль db добавлен provisioner:
+```
+  provisioner "remote-exec" {
+  inline = [
+    "sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf",
+    "sudo systemctl restart mongod.service",
+    ]
+  }
+```
+В результате работы провижионера изменяется конфигурационный файл mongod.config, что позволяет подключаться к базе отовсюду.
+
+
