@@ -21,6 +21,30 @@ resource "google_compute_instance" "app" {
   metadata {
     ssh-keys = "abramov:${file(var.public_key_path)}"
   }
+
+  connection {
+    type        = "ssh"
+    user        = "abramov"
+    agent       = false
+    private_key = "${file(var.private_key_path)}"
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+  
+  provisioner "remote-exec" {
+    script = "${path.module}/files/deploy.sh"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'export DATABASE_URL=${var.db_internal_address}' >> ~/.profile",
+      "export DATABASE_URL=${var.db_internal_address}",
+      "sudo systemctl restart puma.service"
+      ]
+  }
+
 }
 
 resource "google_compute_address" "app_ip" {

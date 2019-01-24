@@ -15,3 +15,8 @@ variable "machine_type" {
   description = "Machine type"
   default     = "g1-small"
 }
+
+variable "private_key_path" {
+  description = "Path to the private key used to run provisioners"
+}
+

@@ -18,6 +18,19 @@ resource "google_compute_instance" "db" {
   metadata {
     ssh-keys = "abramov:${file(var.public_key_path)}"
   }
+
+  connection {
+  type        = "ssh"
+  user        = "abramov"
+  agent       = false
+  private_key = "${file(var.private_key_path)}"
+  }
+  provisioner "remote-exec" {
+  inline = [
+    "sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf",
+    "sudo systemctl restart mongod.service",
+    ]
+  }
 }
 
 # Правило firewall
