@@ -26,7 +26,10 @@ if options.return_list:
     for i in result.get("items"):
         gcloud_instance_name = i.get("name")
         gcloud_instance_nat_ip = i.get("networkInterfaces")[0].get("accessConfigs")[0].get('natIP')
-        inventory_template[gcloud_instance_name] = {"hosts": [gcloud_instance_nat_ip]}
+        if gcloud_instance_name.endswith("app"):
+            inventory_template["app"] = {"hosts": [gcloud_instance_nat_ip]}
+        elif gcloud_instance_name.endswith("db"):
+            inventory_template["db"] = {"hosts": [gcloud_instance_nat_ip]}
 
 inventory_template["_meta"] = {"hostvars": {}}
 print(inventory_template)

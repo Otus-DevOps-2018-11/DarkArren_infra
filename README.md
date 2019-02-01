@@ -250,7 +250,27 @@ appserver                  : ok=2    changed=1    unreachable=0    failed=0
 
 ## Задание со *
 
-Подготовлен скрипт на python - ./py_inv/dynamic_inventory.py:
+### Решение 1 (для прохождения автотестов)
+
+Подготовлен скрипт на bash - ./dynamic_invetory.sh
+
+```
+#!/bin/bash
+cat ./inventory.json
+```
+
+В ansible.cfg добавлено:
+```
+inventory = ./
+inventory_ignore_extensions = ~, inventory, .cfg, .yml, .json, .txt, .ini, .py
+[inventory]
+enable_plugins = script
+```
+
+В inventory_ignore_extensions добавлено "inventory", так как иным образом ансибл не хотел игнорировать инвентори без расширения, судя по всему используется .endswith(), поэтому в таком виде удается игнорировать все, кромен нужного .sh-скрипта. 
+
+### Решение 2 (для души и практики работы с api)
+Подготовлен скрипт на python - ./dynamic_inventory.py:
 
 ```
 #!/usr/local/bin/python3
