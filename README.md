@@ -212,4 +212,109 @@ flag, but this is not recommended.
 ```
 В результате работы провижионера изменяется конфигурационный файл mongod.config, что позволяет подключаться к базе отовсюду.
 
+# HomeWork 10
 
+## Базовое задание
+
+Первый запуск ansible-playbook clone.yml
+```
+PLAY [Clone] **************************************************************************************************************************
+
+TASK [Gathering Facts] ****************************************************************************************************************
+ok: [appserver]
+
+TASK [Clone repo] *********************************************************************************************************************
+ok: [appserver]
+
+PLAY RECAP ****************************************************************************************************************************
+appserver                  : ok=2    changed=0    unreachable=0    failed=0
+```
+Второй запуск - после выполнения ansible app -m command -a 'rm -rf ~/reddit'
+
+```
+PLAY [Clone] **************************************************************************************************************************
+
+TASK [Gathering Facts] ****************************************************************************************************************
+ok: [appserver]
+
+TASK [Clone repo] *********************************************************************************************************************
+changed: [appserver]
+
+PLAY RECAP ****************************************************************************************************************************
+appserver                  : ok=2    changed=1    unreachable=0    failed=0
+```
+
+После удаления директории reddit и повторного запуска плейбка clone.yml изменился статус после сообщения.
+В первом случае папка уже была, поэтому выполнение плейбука, по сути, не вносило никаких изменений.
+Во втором случае - репозиторий был загружен, соответственно второй таск внес изменения, что и отобразилось в логе.
+
+## Задание со *
+
+Подготовлен скрипт на python - ./py_inv/dynamic_inventory.py:
+
+```
+#!/usr/local/bin/python3
+
+import googleapiclient.discovery
+from optparse import OptionParser
+import os
+
+gce_project = os.environ.get("GOOGLE_COMPUTE_PROJECT")
+gce_zone = os.environ.get("GOOGLE_COMPUTE_ZONE")
+
+parser = OptionParser()
+parser.add_option('--list', action="store_true", dest='return_list')
+
+(options, arguments) = parser.parse_args()
+
+inventory_template = {}
+
+compute = googleapiclient.discovery.build('compute', 'v1')
+
+result = compute.instances().list(project=gce_project, zone=gce_zone).execute()
+
+if options.return_list:
+    for i in result.get("items"):
+        gcloud_instance_name = i.get("name")
+        gcloud_instance_nat_ip = i.get("networkInterfaces")[0].get("accessConfigs")[0].get('natIP')
+        inventory_template[gcloud_instance_name] = {"hosts": [gcloud_instance_nat_ip]}
+
+inventory_template["_meta"] = {"hostvars": {}}
+print(inventory_template)
+
+```
+
+перед использованием скрипта для динамического инвентори необходимо выполнить:
+```
+pip3 install google-api-python-client
+export GOOGLE_APPLICATION_CREDENTIALS=/Users/appuser/Infra-123.json
+export GOOGLE_COMPUTE_PROJECT=infra-234156
+export GOOGLE_COMPUTE_ZONE=europe-west1-b
+```
+GOOGLE_APPLICATION_CREDENTIALS - путь до json-файла сервисного аккаунта
+GOOGLE_COMPUTE_PROJECT - имя проекта в котором находятся инстансы
+GOOGLE_COMPUTE_ZONE - имя зоны где находятся инстансы
+
+Результат запуска:
+```
+ansible all -m ping -i dynamic_invetory.py
+
+34.76.196.130 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+34.76.126.255 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+В ansible.cfg добавлено:
+```
+inventory = ./
+inventory_ignore_extensions = ~, inventory, .cfg, .yml, .json, .txt, .ini
+[inventory]
+enable_plugins = script
+```
+
+В inventory_ignore_extensions добавлено "inventory", так как иным образом ансибл не хотел игнорировать инвентори без расширения, судя по всему используется .endswith(), поэтому в таком виде удается игнорировать все, кромен нужного .py-скрипта. 
