@@ -3,7 +3,7 @@
             "var_project_id": "",
             "var_source_image_family": "",
             "var_machine_type": "f1-micro",
-            "var_image_description": "reddit-db",
+            "var_image_description": "db",
             "var_disk_size": "10",
             "var_disk_type": "pd-standard",
             "var_network": "default"
@@ -27,9 +27,8 @@
     ],
     "provisioners": [
         {
-            "type": "shell",
-            "script": "scripts/install_mongodb.sh",
-            "execute_command": "sudo {{.Path}}"
+        "type": "ansible",
+        "playbook_file": "ansible/packer_db.yml"
         }
     ]
 }

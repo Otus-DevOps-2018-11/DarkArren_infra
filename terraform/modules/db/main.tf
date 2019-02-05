@@ -1,8 +1,8 @@
 resource "google_compute_instance" "db" {
-  name         = "reddit-db"
+  name         = "db"
   machine_type = "${var.machine_type}"
   zone         = "${var.zone}"
-  tags         = ["reddit-db"]
+  tags         = ["db"]
 
   boot_disk {
     initialize_params {
@@ -19,18 +19,18 @@ resource "google_compute_instance" "db" {
     ssh-keys = "abramov:${file(var.public_key_path)}"
   }
 
-  connection {
-  type        = "ssh"
-  user        = "abramov"
-  agent       = false
-  private_key = "${file(var.private_key_path)}"
-  }
-  provisioner "remote-exec" {
-  inline = [
-    "sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf",
-    "sudo systemctl restart mongod.service",
-    ]
-  }
+  # connection {
+  # type        = "ssh"
+  # user        = "abramov"
+  # agent       = false
+  # private_key = "${file(var.private_key_path)}"
+  # }
+  # provisioner "remote-exec" {
+  # inline = [
+  #   "sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf",
+  #   "sudo systemctl restart mongod.service",
+  #   ]
+  # }
 }
 
 # Правило firewall
@@ -43,6 +43,6 @@ resource "google_compute_firewall" "firewall_mongo" {
     ports    = ["27017"]
   }
 
-  target_tags = ["reddit-db"]
-  source_tags = ["reddit-app"]
+  target_tags = ["db"]
+  source_tags = ["app"]
 }

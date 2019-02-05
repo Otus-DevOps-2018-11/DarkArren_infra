@@ -21,7 +21,7 @@ variable "machine_type" {
 
 variable "firewall_tags" {
   description = "Firewall rule tag for applicationa"
-  default     = ["reddit-app"]
+  default     = ["app"]
 }
 
 variable "firewall_source_ranges" {
