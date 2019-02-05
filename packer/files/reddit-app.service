@@ -1,5 +1,5 @@
 [Unit]
-Description=reddit-app
+Description=app
 After=syslog.target
 
 [Service]

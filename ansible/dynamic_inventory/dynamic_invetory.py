@@ -4,10 +4,6 @@ import googleapiclient.discovery
 from optparse import OptionParser
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/4rren/git/otus/temp/Infra-03dfcbb34e63.json"
-os.environ["GOOGLE_COMPUTE_PROJECT"] = "infra-226519"
-os.environ["GOOGLE_COMPUTE_ZONE"] = "europe-west1-b"
-
 gce_project = os.environ.get("GOOGLE_COMPUTE_PROJECT")
 gce_zone = os.environ.get("GOOGLE_COMPUTE_ZONE")
 

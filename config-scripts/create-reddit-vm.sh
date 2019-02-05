@@ -1,4 +1,4 @@
-gcloud compute instances create reddit-app\
+gcloud compute instances create app\
   --boot-disk-size=10GB \
   --image-family reddit-full \
   --machine-type=g1-small \
