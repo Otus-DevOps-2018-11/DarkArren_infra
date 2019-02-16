@@ -1,43 +1,50 @@
 # DarkArren_infra
 DarkArren Infra repository
 
-# HomeWork 05
+https://travis-ci.com/Otus-DevOps-2018-11/DarkArren_infra.svg?branch=master
 
-## Connect to someinternalhost through bastion host
-```
-ssh -J Andrey.Abramov@35.233.76.110 Andrey.Abramov@10.132.0.3
-```
-## Connect to someinternal host using alias
-Add to ~/.ssh/config
-```
-echo "Host bastion
-    HostName 35.233.76.110
-    User Andrey.Abramov
+<details>
+  <summary>HomeWork 05</summary>
 
-Host someinternalhost
-    HostName 10.132.0.3
-    User Andrey.Abramov
-    ProxyJump bastion" >> ~/.ssh/config
-```
-Write in console
-```
-ssh someinternalhost
-```
+  # HomeWork 05
 
-## Pritunl
+  ## Connect to someinternalhost through bastion host
+  ```
+  ssh -J Andrey.Abramov@35.233.76.110 Andrey.Abramov@10.132.0.3
+  ```
+  ## Connect to someinternal host using alias
+  Add to ~/.ssh/config
+  ```
+  echo "Host bastion
+      HostName 35.233.76.110
+      User Andrey.Abramov
 
-### Users:
-prinunl - prinunl
-test - 6214157507237678334670591556762
+  Host someinternalhost
+      HostName 10.132.0.3
+      User Andrey.Abramov
+      ProxyJump bastion" >> ~/.ssh/config
+  ```
+  Write in console
+  ```
+  ssh someinternalhost
+  ```
 
-### IPs:
-bastion_IP = 35.233.76.110
-someinternalhost_IP = 10.132.0.3
+  ## Pritunl
 
-### Description:
-На хосте 35.233.76.110 установлен prinunl-server по гайду, добавлен один пользователь и один сервер, подключение к серверу через OpenVPN Client, прежде чем подключаться в первый раз - не забывать запускать созданный VPN-сервер, он не стартует автоматически после создания.
-После подключения к впн-серверу становится доступна внутрення инфраструктура.
+  ### Users:
+  prinunl - prinunl
+  test - 6214157507237678334670591556762
 
+  ### IPs:
+  bastion_IP = 35.233.76.110
+  someinternalhost_IP = 10.132.0.3
+
+  ### Description:
+  На хосте 35.233.76.110 установлен prinunl-server по гайду, добавлен один пользователь и один сервер, подключение к серверу через OpenVPN Client, прежде чем подключаться в первый раз - не забывать запускать созданный VPN-сервер, он не стартует автоматически после создания.
+  После подключения к впн-серверу становится доступна внутрення инфраструктура.
+</details>
+
+<details>
 # HomeWork 06
 testapp_IP = 35.246.169.74
 testapp_port = 9292
@@ -791,6 +798,12 @@ qauser:x:1003:1003::/home/qauser:
 - Запустил ansible-playbook -i environments/stage/gce.py playbooks/site.yml на чистой инфраструктуре, получился работоспособное приложение
 
 ## Задание с ** - Настройка Travis CI
+
+- Добавил скрипт ./play-travis/hw12.sh содержащий в себе установку terrafrom6 packer, tflint, ansible-lint и запуску соответствующих проверок
+- Отключил использование gce-bucket в роли backend чтобы не отображались сообщения о невозможности подключиться к bucket во время выполнения проверок
+- настроил запуск кастомной проверки только в случае коммита в мастер или пулл-реквеста
+- добавил badge из travis ci
+
 
 
 
