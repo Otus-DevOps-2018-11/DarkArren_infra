@@ -26,11 +26,11 @@ module "vpc" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-data "terraform_remote_state" "stage" {
-  backend = "gcs"
+# data "terraform_remote_state" "stage" {
+#   backend = "gcs"
 
-  config {
-    bucket = "storage-bucket-darkarren-stage"
-    prefix = "stage"
-  }
-}
+#   config {
+#     bucket = "storage-bucket-darkarren-stage"
+#     prefix = "stage"
+#   }
+# }

@@ -64,3 +64,17 @@ resource "google_compute_firewall" "firewall_puma" {
   source_ranges = "${var.firewall_source_ranges}"
   target_tags   = "${var.firewall_tags}"
 }
+
+resource "google_compute_firewall" "firewall_nginx" {
+  name    = "allow-nginx-default"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+
+    ports = ["80"]
+  }
+
+  source_ranges = "${var.firewall_source_ranges}"
+  target_tags   = "${var.firewall_tags}"
+}

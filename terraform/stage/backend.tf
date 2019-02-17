@@ -1,6 +1,6 @@
-terraform {
-  backend "gcs" {
-    bucket = "storage-bucket-darkarren-stage"
-    prefix = "stage"
-  }
-}
+# terraform {
+#   backend "gcs" {
+#     bucket = "storage-bucket-darkarren-stage"
+#     prefix = "stage"
+#   }
+# }

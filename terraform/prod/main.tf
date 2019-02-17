@@ -28,10 +28,10 @@ module "vpc" {
   source_ranges = ["79.98.8.3/32"]
 }
 
-data "terraform_remote_state" "prod" {
-  backend = "gcs"
-  config {
-    bucket  = "storage-bucket-darkarren-prod"
-    prefix  = "prod"
-  }
-}
+# data "terraform_remote_state" "prod" {
+#   backend = "gcs"
+#   config {
+#     bucket  = "storage-bucket-darkarren-prod"
+#     prefix  = "prod"
+#   }
+# }
