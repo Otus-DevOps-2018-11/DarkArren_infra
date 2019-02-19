@@ -21,16 +21,16 @@ module "app" {
   db_internal_address = "${module.db.db_internal_ip}"
 }
 
-module "vpc" {
-  source        = "../modules/vpc"
-  source_ranges = ["0.0.0.0/0"]
-}
-
-# data "terraform_remote_state" "stage" {
-#   backend = "gcs"
-
-#   config {
-#     bucket = "storage-bucket-darkarren-stage"
-#     prefix = "stage"
-#   }
+# module "vpc" {
+#   source        = "../modules/vpc"
+#   source_ranges = ["0.0.0.0/0"]
 # }
+
+data "terraform_remote_state" "stage" {
+  backend = "gcs"
+
+  config {
+    bucket = "storage-bucket-darkarren-stage"
+    prefix = "stage"
+  }
+}
